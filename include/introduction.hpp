@@ -20,7 +20,7 @@ public:
 
     std::string_view surename() const
     {
-        return ...
+        return ret
     }
 
     std::string fullname() const
