@@ -1,0 +1,127 @@
+# Верификационный план сумматора.
+
+plan:
+  - description: Верификационный план сумматора.
+    version: 0.0.1
+    status: Done
+
+## Тесты
+
+tests:
+
+  - name: adder_test
+    description: >
+      Проверка основной функциональности.
+    type: Test
+    link: adder_test*
+
+## Протокольные проверки
+
+protocol_checks:
+
+  - name: apValidOAfterValidI
+    description: >
+      Если tvalid_i выставляется в 1, то на
+      следующем такте tvalid_o выставляется в 1.
+    type: Assertion
+    link: /tb_adder/intf/apValidOAfterValidI
+
+## Протокольное покрытие
+
+protocol_coverage:
+
+  - name: cpValidINoValidO
+    description: В текущем такте сигнал valid_i в 1, а valid_o в 0.
+    type: Directive
+    link: /tb_adder/intf/cpValidINoValidO
+
+  - name: сpNoValidIValidO
+    description: В текущем такте сигнал valid_i в 0, а valid_o в 1.
+    type: Directive
+    link: /tb_adder/intf/cpNoValidIValidO
+
+  - name: сpValidIValidO
+    description: В текущем такте сигнал valid_i в 1 и valid_o в 1.
+    type: Directive
+    link: /tb_adder/intf/cpValidIValidO
+
+## Покрытие
+
+func_coverage:
+
+  ## Входное
+
+  - name: adder_cg
+    description: Группа покрытия сумматора.
+    type: CoverGroup
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg
+
+  - name: tdata_a_special_cp
+    description: Точка покрытия спец. значений сигнала tdata_a_i.
+    type: CoverPoint
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :tdata_a_special_cp
+
+  - name: tdata_b_special_cp
+    description: Точка покрытия спец. значений сигнала tdata_b_i.
+    type: CoverPoint
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :tdata_b_special_cp
+
+  - name: tdata_a_intervals_cp
+    description: Точка покрытия интервалов сигнала tdata_a_i.
+    type: CoverPoint
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :tdata_a_intervals_cp
+
+  - name: tdata_b_intervals_cp
+    description: Точка покрытия интервалов сигнала tdata_b_i.
+    type: CoverPoint
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :tdata_b_intervals_cp
+
+  - name: aXb_special
+    description: Перекрестное покрытие специальных значений сигналов tdata_a_i и tdata_b_i.
+    type: Cross
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :aXb_special
+
+  - name: aXb_intervals
+    description: Перекрестное покрытие интервалов сигналов tdata_a_i и tdata_b_i.
+    type: Cross
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :aXb_intervals
+
+  ## Выходное
+
+  - name: tdata_o_cp
+    description: Точка покрытия значений сигнала tdata_o.
+    type: CoverPoint
+    link: /adder_dv_pkg/adder_cg,\/adder_dv_pkg::adder_checker::cg :tdata_o_cp
+
+  - name: min
+    description: Минимальное значение сигнала tdata_o.
+    type: Bin
+    link: /adder_dv_pkg/adder_cg/\/adder_dv_pkg::adder_checker::cg /tdata_o_cp/min
+
+  - name: max
+    description: Максимальное значение сигнала tdata_o.
+    type: Bin
+    link: /adder_dv_pkg/adder_cg/\/adder_dv_pkg::adder_checker::cg /tdata_o_cp/max
+
+  - name: intervals
+    description: Интервалы значений сигнала tdata_o.
+    type: Bin
+    link: /adder_dv_pkg/adder_cg/\/adder_dv_pkg::adder_checker::cg /tdata_o_cp/intervals[0]
+
+# Кодовое покрытие
+
+code_coverage:
+
+  - name: adder
+    names:
+      - Branch
+      - Toggle
+      - Statement
+    types:
+      - Branch
+      - Toggle
+      - Bin
+    links:
+      - /tb_adder/DUT/*
+      - /tb_adder/DUT/*
+      - /tb_adder/DUT/#stmt#*
